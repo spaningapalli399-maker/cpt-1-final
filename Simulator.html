@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Physics Simulator</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="Simulatorstyle.css">
+        <script src="Simulator.js" defer></script>
+    </head>
+    <body>
+        <h1 id = "header">
+            Welcome to the Physics Simulator
+        </h1>
+        <canvas id="simulationCanvas" width="600" height="400"></canvas>
+        
+        <div>
+            <div>
+                <label for="xPos">X Position:</label>
+                <input type = "range" id = "xPos" value = "300" placeholder="xPosition" min = "0" max = "600">
+                <input type = "text" id = "xPosition" value = "300" placeholder="min launch" readonly>
+
+            </div>
+            <div>
+                <label for="yPos">Y Position:</label>
+                <input type = "range" id = "yPos" value = "300" placeholder="yPosition" min = "0" max = "400">
+                <input type = "text" id = "yPosition" value = "300" placeholder="min launch" readonly>
+            </div>
+            <div>
+                <label for="minVelo">Minimum Velocity:</label>
+                <input type = "range" id = "minVelo" value = "5" placeholder="Min Velocity (m/s)" min = "-100" max = "100">
+                <input type = "text" id = "minVelVal" value = "30" placeholder="min launch" readonly>
+            </div>
+            <div>
+                <label for="maxVelo">Maximum Velocity:</label>
+                <input type = "range" id = "maxVelo" value = "10" placeholder="Max Velocity (m/s)" min = "-100" max = "100">
+                <input type = "text" id = "maxVelVal" value = "30" placeholder="min launch" readonly>
+            </div>
+            <div>
+                <label for="minLaunch">Minimum Launch Angle:</label>
+                <input type = "range" id = "minLaunch" value = "30" placeholder="min launch" min = "0" max = "360">
+                <input type = "text" id = "minLaunchVal" value = "30" placeholder="min launch" readonly>
+                
+            </div>
+            <div>
+                <label for="maxLaunch">Maximum Launch Angle:</label>
+                <input type = "range" id = "maxLaunch" value = "60" placeholder="max launch" min = "0" max = "360">
+                <input type = "text" id = "maxLaunchVal" value = "30" placeholder="min launch" readonly>
+            </div>
+            <div>
+                <label for ="minGrav">Minimum Gravity:</label>
+                <input type = "range" id = "minGrav" value = "-4" placeholder="Min Gravity" min = "-9.8" max = "9.8" step="0.1">
+                <input type = "text" id = "minGravVal" value = "30" placeholder="min launch" readonly>
+            </div>
+            <div>
+                <label for ="maxGrav">Maximum Gravity:</label>
+                <input type = "range" id = "maxGrav" value = "9.8" placeholder="Max Gravity" min = "-9.8" max = "9.8" step="0.1">
+                <input type = "text" id = "maxGravVal" value = "30" placeholder="min launch" readonly>
+            </div>
+            <div>
+                <label for ="minAir">Minimum Air Resistance:</label>
+                <input type = "range" id = "minAir" value = "0" placeholder="Min Air Resistance" min = "0" max = "0.1" step="0.001">
+                <input type = "text" id = "minAirVal" value = "30" placeholder="min launch" readonly>
+            </div>
+            <div>
+                <label for ="maxAir">Maximum Air Resistance:</label>
+                <input type = "range" id = "maxAir" value = "0.01" placeholder="Max Air Resistance" min = "0" max = "0.1" step="0.001">
+                <input type = "text" id = "maxAirVal" value = "30" placeholder="min launch" readonly>
+            </div>
+			<div>
+                <label for ="minBalls">Minimum Number of Balls:</label>
+                <input type = "range" id = "minBalls" value = "0" placeholder="Min Number of Balls" min = "0" max = "400" step = "0.001">
+                <input type = "text" id = "minBallVal" value = "0" placeholder="min launch" readonly>
+            </div>
+            <div>
+                <label for ="maxBalls">Maximum Number of Balls:</label>
+                <input type = "range" id = "maxBalls" value = "400" placeholder="Max Number of Balls" min = "0" max = "400" step = "0.001">
+                <input type = "text" id = "maxBallVal" value = "400" placeholder="min launch" readonly>
+            </div>
+        </div>
+    </body>
+</html>
