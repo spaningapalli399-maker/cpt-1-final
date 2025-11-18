@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Ball Falling Animation</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+    <!-- Import Three.js from a CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.143/build/three.min.js"></script>
+</head>
+<body>
+
+<script>
+    // --- 1. Scene Setup ---
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Add some lighting
+    const ambientLight = new THREE.AmbientLight(0x404040); // soft white light
+    scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(5, 10, 7.5);
+    scene.add(directionalLight);
+
+    // --- 2. Create the Ball ---
+    const geometry = new THREE.SphereGeometry(1, 32, 32); // Radius of 1
+    const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+    const ball = new THREE.Mesh(geometry, material);
+	const ball2 = new THREE.Mesh(geometry, material);
+    ball.position.set(-10, 0, 10); // Start position high up
+	ball.position.set(-10, 10, 10); // Start position high up
+    scene.add(ball);
+	scene.add(ball2);
+	
+	//let ballCOntainer = [];
+	//ballcountainer[0] = ball;
+	//ballcountainer[1] = ball2;
+	
+    // Create a ground plane
+    const planeGeometry = new THREE.PlaneGeometry(20, 20);
+    const planeMaterial = new THREE.MeshStandardMaterial({ color: 0xaaaaaa, side: THREE.DoubleSide });
+    const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+    plane.rotation.x = -Math.PI / 2; // Rotate to be horizontal
+    plane.position.y = -1;
+    scene.add(plane);
+
+    camera.position.set(5, 5, 15);
+    camera.lookAt(0, 0, 0);
+
+    // --- 3. Animation Logic (Simple Gravity) ---
+    const gravity = -9.8; // Acceleration due to gravity (m/s^2)
+    let velocityY = 10; // Initial vertical velocity
+    const bounceFactor = 0.7; // How much velocity is retained on bounce
+    const groundLevel = 0; // The Y position of the ground (top of plane)
+	
+	const velocityX = 0.1;
+	const velocityZ = 0.1;
+	let skip = false;
+    function animate() {
+        requestAnimationFrame(animate);
+
+        // Update physics
+        const deltaTime = 0.016; // Approx time for 60fps (1/60)
+        velocityY += gravity * deltaTime;
+        ball.position.y += velocityY * deltaTime;
+		ball.position.x += velocityX
+		ball.position.z -= velocityZ
+        // Check for collision with the ground and bounce
+        if (ball.position.y < groundLevel) {
+			if (skip == true){
+				velocityY = -velocityY;
+				skip = false;;
+			}
+			else if (skip == false){
+				resetBall();
+				velocityY = 10;
+				velocityX = 0.1;
+				velocityZ = 0.1;
+			}
+        }
+        renderer.render(scene, camera);
+    }
+	
+	function resetBall(){
+        ball.position.y = 1
+		ball.position.x = -10
+		ball.position.z = 10
+		velocityY = 10;
+		velocityX = 0.1;
+		velocityZ = 0.1;
+		skip = true;
+	}
+    animate();
+
+    // Handle window resize
+    window.addEventListener('resize', onWindowResize, false);
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+</script>
+
+</body>
+</html>
