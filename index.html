@@ -10,19 +10,16 @@
 <body>
 
     <h1 id="header">Physics Simulator</h1>
+    <a href="3dwork.html" id="button"> Go to 3D Simulator</a>
 
     <div class="main-container">
         
-        <!-- Left Side: Simulation -->
         <div class="simulation-area">
             <canvas id="simulationCanvas" width="600" height="400"></canvas>
         </div>
-
-        <!-- Right Side: Controls -->
         <div class="controls-area">
             <div class="controls-grid">
                 
-                <!-- Position Group -->
                 <div class="control-group">
                     <span class="group-title">Spawn Position</span>
                     <div class="input-row">
@@ -37,7 +34,6 @@
                     </div>
                 </div>
 
-                <!-- Velocity Group -->
                 <div class="control-group">
                     <span class="group-title">Velocity (m/s)</span>
                     <div class="input-row">
@@ -52,7 +48,6 @@
                     </div>
                 </div>
 
-                <!-- Launch Angle Group -->
                 <div class="control-group">
                     <span class="group-title">Launch Angle (Deg)</span>
                     <div class="input-row">
@@ -67,7 +62,6 @@
                     </div>
                 </div>
 
-                <!-- Gravity & Air Group -->
                 <div class="control-group">
                     <span class="group-title">Environment</span>
                     <div class="input-row">
@@ -92,7 +86,6 @@
                     </div>
                 </div>
 
-                <!-- Object Settings -->
                 <div class="control-group">
                     <span class="group-title">Objects</span>
                     <div class="input-row">
@@ -106,10 +99,11 @@
                         <input type="number" id="ballSizeVal" value="5">
                     </div>
                 </div>
-
                 <input type="button" id="random" value="Randomize All Parameters" onclick="randomize()"> 
+                <!--index.html-->
             </div>
         </div>
     </div>
 </body>
 </html>
+
