@@ -24,14 +24,14 @@ body {
     width: 8px;
 }
 ::-webkit-scrollbar-track {
-    background: #121212; 
+    background: #00bcd4; 
 }
 ::-webkit-scrollbar-thumb {
-    background: #444; 
+    background: #00bcd4; 
     border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: #555; 
+    background: #00bcd4; 
 }
 
  header {
@@ -67,13 +67,13 @@ font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
  }
  
  .controls {
-flex: 1;
+/*flex: 1;*/
 background: #1e1e1e;
 border-radius: 10px;
 border: 1px solid #333;
 padding: 15px;
 overflow-y: auto; /* Scroll only the controls if needed */
-min-width: 320px;
+width: 270px;
  }
  
  .control-group {

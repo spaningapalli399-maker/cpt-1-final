@@ -1,5 +1,3 @@
-/* ------------- Physics Simulator Logic ---------- */
-
 let velocity = [];
 let launchAngle = [];
 let gravity = [];
@@ -11,7 +9,6 @@ let y = [];
 let vx = [];
 let vy = [];
 
-// --- DOM Elements ---
 let minVelocity = document.getElementById("minVelo");
 let maxVelocity = document.getElementById("maxVelo");
 let minLaunchAngle = document.getElementById("minLaunch");
@@ -25,7 +22,6 @@ let yPos = document.getElementById("yPos");
 let numBallS = document.getElementById("numBalls");
 let ballSize = document.getElementById("ballSize");
 
-// --- Value Displays (Number Inputs) ---
 let xPosVal = document.getElementById("xPosition");
 let yPosVal = document.getElementById("yPosition");
 let minVelVal = document.getElementById("minVelVal");
@@ -41,7 +37,6 @@ let ballSizeVal = document.getElementById("ballSizeVal");
 
 let canvas = document.getElementById("simulationCanvas");
 
-// --- Event Listeners for Sliders ---
 minVelocity.addEventListener("input", checkValues);
 maxVelocity.addEventListener("input", checkValues);
 minLaunchAngle.addEventListener("input", checkValues);
@@ -55,7 +50,6 @@ yPos.addEventListener("input", checkValues);
 numBallS.addEventListener("input", checkValues);
 ballSize.addEventListener("input", checkValues);
 
-// --- Event Listeners for Number Inputs ---
 xPosVal.addEventListener("input", checkRange);
 yPosVal.addEventListener("input", checkRange);
 minVelVal.addEventListener("input", checkRange);
@@ -94,7 +88,6 @@ function randomize(){
     let xPosition = Math.floor(Math.random() * (canvas.width + 1));
     let yPosition = Math.floor(Math.random() * (canvas.height + 1));
     
-    // Safe randomization: Generate two numbers and sort them so Min is always <= Max
     let v1 = Math.floor(Math.random() * 100); 
     let v2 = Math.floor(Math.random() * 100);
     let minVel = Math.min(v1, v2);
@@ -118,7 +111,6 @@ function randomize(){
     let numBalls = Math.floor(Math.random() * 100) + 1;
     let ballSizeRandom = Math.floor(Math.random() * 20) + 1;
 
-    // Apply to inputs
     ballSize.value = ballSizeRandom;
     xPos.value = xPosition;
     yPos.value = yPosition;
@@ -132,14 +124,12 @@ function randomize(){
     maxAirResistance.value = maxAir.toFixed(3);
     numBallS.value = numBalls;
     
-    // Update UI and restart
     changeValues(); 
     updateParameters();
     cancelAnimationFrame(animationID);
     simulate();
 }
 
-// Update Slider values from Text Inputs
 function checkRange(){
     xPos.value = parseFloat(xPosVal.value);
     yPos.value = parseFloat(yPosVal.value);
@@ -156,7 +146,6 @@ function checkRange(){
     checkValues();
 }
 
-// Main validation logic
 function checkValues() {
     let minVelo = parseFloat(minVelocity.value);
     let maxVelo = parseFloat(maxVelocity.value);
@@ -166,8 +155,8 @@ function checkValues() {
     let maxGrav = parseFloat(maxGravity.value);
     let minAir = parseFloat(minAirResistance.value);
     let maxAir = parseFloat(maxAirResistance.value);
-    
-    changeValues(); // Sync text inputs to sliders
+
+    changeValues();
 
     if (minVelo > maxVelo){
         showError();
@@ -188,7 +177,6 @@ function checkValues() {
     }
 }
 
-// Update Text Inputs from Sliders
 function changeValues() {
     xPosVal.value = xPos.value;
     yPosVal.value = yPos.value;
@@ -254,12 +242,10 @@ function initalSetup() {
 function simulate() {
     let ctx = canvas.getContext("2d");
     
-    // Clear Canvas
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     for (let i = 0; i < simulator.numBalls; i++) {
-        // Apply Physics
         vx[i] *= (1 - airResistance[i]);
         vy[i] *= (1 - airResistance[i]); 
         
@@ -267,12 +253,10 @@ function simulate() {
         y[i] += vy[i];
         vy[i] -= gravity[i] * 0.1;
 
-        // Reset if out of bounds
         if (x[i] > canvas.width || x[i] < 0 || y[i] > canvas.height || y[i] < 0) {
             resetBall(i, canvas);
         }
         
-        // Draw Ball
         ctx.fillStyle = ballColors[i];
         ctx.beginPath();                
         ctx.arc(x[i], y[i], simulator.ballSize, 0, Math.PI * 2);
@@ -295,6 +279,5 @@ function resetBall(i, canvas) {
     vy[i] = -velocity[i] * Math.sin(launchAngle[i] * Math.PI / 180);
 }
 
-// Initialize simulation on load
 updateArray();
 checkValues();
