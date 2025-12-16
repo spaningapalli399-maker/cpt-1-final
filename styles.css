@@ -7,6 +7,39 @@
     --border: #333;
 }
 
+
+
+/*  theme1 definition */
+.theme1 {
+
+    --bg-color: #A4508B;
+    --panel-bg: #C191A1;
+    --accent: #eabfcb; 
+    --text-main: #2F004F;
+    --text-dim: #5F0A87;
+    --border: #2F004F;
+}
+
+/*  theme2  */
+.theme2 {
+
+    --bg-color: #3F220F;
+    --panel-bg: #772014;
+    --accent: #af4319; 
+    --text-main: #3F220F;
+    --text-dim: #e71d36;
+    --border: #19180A;
+}
+/*  theme2  */
+.theme3 {
+    --bg-color: #121212;
+    --panel-bg: #1e1e1e;
+    --accent: #00bcd4; 
+    --text-main: #e0e0e0;
+    --text-dim: #aaaaaa;
+    --border: #333;
+}
+
 body {
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background-color: var(--bg-color);
@@ -16,7 +49,7 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Prevent body scroll, scroll panels instead */
+    overflow: hidden;
 }
 
 #header {
@@ -29,7 +62,6 @@ body {
     flex-shrink: 0;
 }
 
-/* Main Layout */
 .main-container {
     display: flex;
     flex: 1;
@@ -39,7 +71,6 @@ body {
     overflow: hidden;
 }
 
-/* Canvas Section */
 .simulation-area {
     flex: 2;
     display: flex;
@@ -58,7 +89,6 @@ canvas {
     max-height: 100%;
 }
 
-/* Controls Section */
 .controls-area {
     flex: 1;
     background: var(--panel-bg);
@@ -75,7 +105,6 @@ canvas {
     gap: 10px;
 }
 
-/* Control Groups (Cards) */
 .control-group {
     background: rgba(255, 255, 255, 0.03);
     padding: 10px;
@@ -91,7 +120,6 @@ canvas {
     display: block;
 }
 
-/* Inputs Row */
 .input-row {
     display: flex;
     align-items: center;
@@ -104,7 +132,6 @@ canvas {
     flex: 1;
 }
 
-/* Styling Inputs */
 input[type="range"] {
     flex: 2;
     margin: 0 10px;
@@ -122,8 +149,7 @@ input[type="number"] {
     text-align: center;
 }
 
-/* Randomize Button */
-#random {
+.button {
     width: 100%;
     padding: 12px;
     background: var(--accent);
@@ -136,7 +162,7 @@ input[type="number"] {
     transition: filter 0.2s;
 }
 
-#random:hover {
+.button:hover {
     filter: brightness(1.1);
 }
 

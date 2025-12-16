@@ -1,3 +1,5 @@
+/* ------------- Physics Simulator Logic ---------- */
+
 let velocity = [];
 let launchAngle = [];
 let gravity = [];
@@ -35,6 +37,14 @@ let maxAirVal = document.getElementById("maxAirVal");
 let numBallsVal = document.getElementById("numBallsVal");
 let ballSizeVal = document.getElementById("ballSizeVal");
 
+let velMin = document.getElementById("velMin");
+let velMax = document.getElementById("velMax");
+let gravMin = document.getElementById("gravMin");
+let gravMax = document.getElementById("gravMax");
+let dragMin  = document.getElementById("dragMin");
+let dragMax  = document.getElementById("dragMax");
+let ballMax = document.getElementById("maxBalls");
+
 let canvas = document.getElementById("simulationCanvas");
 
 minVelocity.addEventListener("input", checkValues);
@@ -63,7 +73,16 @@ maxAirVal.addEventListener("input", checkRange);
 numBallsVal.addEventListener("input", checkRange);
 ballSizeVal.addEventListener("input", checkRange);
 
+velMin.addEventListener("input", sliderRange);
+velMax.addEventListener("input", sliderRange);
+gravMin.addEventListener("input", sliderRange);
+gravMax.addEventListener("input", sliderRange);
+dragMin.addEventListener("input", sliderRange);
+dragMax.addEventListener("input", sliderRange);
+ballMax.addEventListener("input", sliderRange);
+
 let animationID;
+// structure object from w3schools
 let simulator = {
     minVelocity: 50,
     maxVelocity: 100,
@@ -78,12 +97,69 @@ let simulator = {
     numBalls: 50,
     ballSize: 5
 };
-
+// colors list from w3schools
 let color = ["red", "blue", "green", "orange", "purple", "cyan", "magenta", "yellow", "lime", "pink", "teal", "lavender", "brown", "beige", "maroon", "navy", "olive", "coral", "turquoise", "silver",
     "gold", "salmon", "plum", "orchid", "ivory", "khaki", "crimson", "indigo", "violet", "azure", "emerald",
     "amber", "cerulean", "fuchsia", "jade", "saffron", "sepia", "tan", "umber", "vermilion", "wisteria",
     "zucchini", "cobalt", "denim", "ecru", "flax", "garnet", "harlequin", "isabelline", "jasmine", "lilac"];
 
+// function to check if the slider range textboxes have valid input, if yes then update slider values and restart simulation
+function sliderRange(){
+	let velMini = parseFloat(velMin.value);
+	let velMaxi = parseFloat(velMax.value);
+	let gravMini = parseFloat(gravMin.value);
+	let gravMaxi = parseFloat(gravMax.value);
+	let dragMini = parseFloat(dragMin.value);
+	let dragMaxi = parseFloat(dragMax.value);
+	let ballMaxi = parseFloat(ballMax.value);
+	
+	if (velMini > velMaxi){
+		showError(2);
+	}
+	else if (velMini > velMaxi){
+		showError(2);
+	}
+	else if (dragMini > dragMaxi){
+		showError(2);
+	}
+	else if (ballMaxi < 1){
+		showError(3);
+	}
+	else{
+		updateSlider();
+		updateParameters();
+		cancelAnimationFrame(animationID);
+		simulate();
+	}
+}
+
+// function to change the min and max of sliders based on the text box input
+function updateSlider(){
+	let updateMinVel = velMin.value;
+	let updateMaxVel = velMax.value;
+	let updateMinGrav = gravMin.value;
+	let updateMaxGrav = gravMax.value;
+	let updateMinDrag = dragMin.value;
+	let updateMaxDrag = dragMax.value;
+	let updateBallCount = ballMax.value;
+	
+	minVelocity.min = updateMinVel;
+	minVelocity.max = updateMaxVel;
+	maxVelocity.min = updateMinVel;
+	maxVelocity.max = updateMaxVel;
+	minGravity.min = updateMinGrav;
+	minGravity.max = updateMaxGrav;
+	maxGravity.min = updateMinGrav;
+	maxGravity.max = updateMaxGrav;
+	minAirResistance.min = updateMinDrag;
+	minAirResistance.max = updateMaxDrag;
+	maxAirResistance.min = updateMinDrag;
+	maxAirResistance.max = updateMaxDrag;
+	numBallS.max = updateBallCount;
+	changeValues();
+}
+
+// called when the randomize button is pressed, min and max range of randomize is hardcoded
 function randomize(){
     let xPosition = Math.floor(Math.random() * (canvas.width + 1));
     let yPosition = Math.floor(Math.random() * (canvas.height + 1));
@@ -130,6 +206,7 @@ function randomize(){
     simulate();
 }
 
+// update slider value based on the number input through textbox
 function checkRange(){
     xPos.value = parseFloat(xPosVal.value);
     yPos.value = parseFloat(yPosVal.value);
@@ -146,6 +223,7 @@ function checkRange(){
     checkValues();
 }
 
+// check if the slider values are in range; min < max, if not call showError with the error 'tag', if values range is valid then update simulation
 function checkValues() {
     let minVelo = parseFloat(minVelocity.value);
     let maxVelo = parseFloat(maxVelocity.value);
@@ -159,16 +237,16 @@ function checkValues() {
     changeValues();
 
     if (minVelo > maxVelo){
-        showError();
+        showError(1);
     }
     else if (minLaunch > maxLaunch){
-        showError();
+        showError(1);
     }
     else if (minGrav > maxGrav){
-        showError();
+        showError(1);
     }
     else if (minAir > maxAir){
-        showError();
+        showError(1);
     }
     else{
         updateParameters();
@@ -177,6 +255,7 @@ function checkValues() {
     }
 }
 
+// update textbox value to slider value
 function changeValues() {
     xPosVal.value = xPos.value;
     yPosVal.value = yPos.value;
@@ -192,7 +271,8 @@ function changeValues() {
     ballSizeVal.value = ballSize.value;
 }
 
-function showError(){
+// function to show errors; errorId tells the function what error message to show
+function showError(errorId){
     cancelAnimationFrame(animationID);
     let ctx = canvas.getContext("2d");
     
@@ -202,9 +282,21 @@ function showError(){
     ctx.font = '20px Arial';
     ctx.fillStyle = 'red'; 
     ctx.textAlign = 'center';
-    ctx.fillText('Invalid Range: Min cannot be greater than Max!', canvas.width/2, canvas.height/2);
+	if (errorId == 1){
+		ctx.fillText('Invalid Range: Min cannot be greater than Max!', canvas.width/2, canvas.height/2);
+	}
+	else if (errorId == 2){
+		ctx.fillText('Invalid Range: Slider Min cannot be greater than Slider Max', canvas.width/2, canvas.height/2);
+	}
+	else if (errorId == 3){
+		ctx.fillText('Invalid Entry: Number of balls cannot be less than 1', canvas.width/2, canvas.height/2);
+	}
+	else if (errorId == 4){
+		ctx.fillText('Invalid Entry: Size of balls cannot be less than 1', canvas.width/2, canvas.height/2);
+	}
 }
 
+// update the simulation structure's value
 function updateParameters() {
     simulator.minVelocity = parseFloat(minVelocity.value);
     simulator.maxVelocity = parseFloat(maxVelocity.value);
@@ -219,6 +311,7 @@ function updateParameters() {
     updateArray();
 }
 
+// initialize each ball's properties; random values are chosen going from min to max, inclusive 
 function updateArray() {
     for (let i = 0; i < simulator.numBalls; i++) {
         velocity[i] = Math.random() * (simulator.maxVelocity - simulator.minVelocity) + simulator.minVelocity;
@@ -230,7 +323,10 @@ function updateArray() {
     initalSetup();
 }
 
+// set position and starting x and y velocity
+// x and y velocity is calculated based on velocity and launch angle
 function initalSetup() {
+
     for (let i = 0; i < simulator.numBalls; i++) {
         x[i] = simulator.xPos = parseFloat(xPos.value);
         y[i] = simulator.yPos = parseFloat(yPos.value);
@@ -239,6 +335,7 @@ function initalSetup() {
     }
 }
 
+// t=function for animation, for loop updates each balls position based on velocity and accereration. requestAnimationFrame allows animation at browsers frame per second rate
 function simulate() {
     let ctx = canvas.getContext("2d");
     
@@ -255,6 +352,7 @@ function simulate() {
 
         if (x[i] > canvas.width || x[i] < 0 || y[i] > canvas.height || y[i] < 0) {
             resetBall(i, canvas);
+            
         }
         
         ctx.fillStyle = ballColors[i];
@@ -266,6 +364,7 @@ function simulate() {
     animationID = requestAnimationFrame(simulate);
 }
 
+// called when a ball is out of the screen, the new vall is assigned new random properties
 function resetBall(i, canvas) {
     velocity[i] = Math.random() * (simulator.maxVelocity - simulator.minVelocity) + simulator.minVelocity;
     launchAngle[i] = Math.random() * (simulator.maxLaunchAngle - simulator.minLaunchAngle) + simulator.minLaunchAngle;
@@ -279,5 +378,33 @@ function resetBall(i, canvas) {
     vy[i] = -velocity[i] * Math.sin(launchAngle[i] * Math.PI / 180);
 }
 
+function pauseplay(){
+    if(animationID)
+    {
+        cancelAnimationFrame(animationID);
+        animationID = null;
+    }
+    else{
+        animationID = requestAnimationFrame(simulate);
+    }
+   
+
+}
+
+
+
+let themes = ['theme1', 'theme2','theme3'];
+let themeidx = 2;
+function changetheme(){
+    document.body.classList.remove(themes[themeidx]);
+    themeidx += 1;
+    if (themeidx >= 3){
+        themeidx = 0;
+    }
+    document.body.classList.add(themes[themeidx]);
+
+}
+
+// called to start simulation
 updateArray();
 checkValues();
